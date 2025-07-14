@@ -15,7 +15,8 @@ router.register('POST', '/register', AuthController.register)
 router.register('GET', '/', ViewController.serveHome);
 router.register('POST', '/add-job', AuthMiddleware, JobController.addJob);
 router.register('GET', '/jobs', JobController.allJobs);
-
+router.register('GET', '/jobs/:id', JobController.getJobById);
+router.register('PUT', '/job/:id', JobController.editJob);
 
 
 const server = http.createServer((req, res) => {

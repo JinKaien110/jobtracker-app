@@ -1,34 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard</title>
-    <link rel="stylesheet" href="/public/css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/public/css/admin-dashboard.css" />
 </head>
 <body>
-    <div class="navbar">
-        <p id="greetings"></p>
-    </div>
-    <div class="container">
-        <p id="message"></p>
-        <button id="addJob">Add Job</button>
-        <div id="job-list"></div>
-    </div>
-    <script src="/public/js/dashboard.js"></script>
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <nav>
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Settings</a>
+    </nav>
+    <p id="greetings"></p>
+  </aside>
 
-    <!-- Modal -->
+  <main class="main-content">
+    <header class="header">
+      <h1>Dashboard</h1>
+      <div class="actions">
+        <button type="button" id="addJob">Add Job</button>
+        <button type="button" id="logoutBtn">Logout</button>
+      </div>
+    </header>
 
-    <div id="jobModal" class="modal hidden">
+    <section class="cards">
+      <div class="card">
+        <h3>Total Users</h3>
+        <p>128</p>
+      </div>
+      <div class="card">
+        <h3>Total Jobs</h3>
+        <p>42</p>
+      </div>
+    </section>
+
+    <section id="job-list" class="job-list">
+      <!-- Jobs will be loaded here -->
+    </section>
+
+    <p id="message" class="message"></p>
+  </main>
+
+  <!-- Add Job Modal -->
+  <div id="jobModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Add New Job</h2>
+      <form id="jobForm">
+        <input type="text" name="title" placeholder="Job Title" required />
+        <input type="text" name="company" placeholder="Company Name" required />
+        <div class="form-actions">
+          <button type="submit">Save Job</button>
+          <button type="button" id="closeModal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    <!-- Edit Job Modal -->
+    <div id="jobModalEdit" class="modal hidden">
         <div class="modal-content">
-            <h2> Add New Job </h2>
-            <form id="jobForm">
-                <input type="text" name="title" placeholder="Job Title" required /> 
+            <h2>Edit Job</h2>
+            <form id="jobFormEdit">
+                <input type="hidden" name="jobId" id="editJobId">
+                <input type="text" name="title" placeholder="Job Title" required />
                 <input type="text" name="company" placeholder="Company Name" required />
-                <button type="submit">Save Job</button>
-                <button type="button" id="closeModal">Cancel</button>
+                <div class="form-actions">
+                    <button type="submit">Save Job</button>
+                    <button type="button" id="closeModal">Cancel</button>
+                </div>
             </form>
         </div>
     </div>
+
+  <script src="/public/js/dashboard.js"></script>
 </body>
 </html>

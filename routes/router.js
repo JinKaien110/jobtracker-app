@@ -1,3 +1,4 @@
+const JobController = require('../controllers/JobController');
 const ViewController = require('../controllers/ViewController');
 
 class Router {
@@ -12,9 +13,18 @@ class Router {
 
     async resolve(req, res) {
         const { url, method } = req;
-        const cleanUrl = url.replace(/\/+$/, '');
-        const key = `${method.toUpperCase()} ${cleanUrl}`;
-
+        const key = `${method.toUpperCase()} ${url}`;
+        if(method === 'PUT' && url.startsWith('/job/')) {
+            const id = url.split('/')[2];
+            req.jobId = id;
+            return JobController.editJob(req, res);
+        }
+  
+        if(method === 'GET' && url.startsWith('/jobs/')) {
+            const id = url.split('/')[2];
+            req.jobId = id;
+            return JobController.getJobById(req, res);
+        }
         const handlers = this.routes[key];
 
         if(handlers) {
@@ -33,7 +43,7 @@ class Router {
 
 
         res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('404 Not Found');
+        res.end('404 Not Found INDEX');
     }
 }
 
