@@ -26,19 +26,28 @@ class JobModel {
     }
 
     static async editJob(jobId, newData) {
-    const db = await connectDB();
+        const db = await connectDB();
 
-    if (!ObjectId.isValid(jobId)) {
-        throw new Error('Invalid Job ID format');
+        if (!ObjectId.isValid(jobId)) {
+            throw new Error('Invalid Job ID format');
+        }
+
+        const result = await db.collection('jobs').findOneAndUpdate(
+            { _id: new ObjectId(jobId) },
+            { $set: newData },
+            { returnDocument: 'after'}
+        );
+        return result;
     }
 
-    const result = await db.collection('jobs').findOneAndUpdate(
-        { _id: new ObjectId(jobId) },
-        { $set: newData },
-        { returnDocument: 'after'}
-    );
-    return result;
-}
+    static async deleteJob(jobId) {
+        const db = await connectDB();
+
+        const result = await db.collection('jobs').findOneAndDelete(
+            { _id: new ObjectId(jobId) },
+        );
+        return result;
+    }
 }
 
 module.exports = JobModel;

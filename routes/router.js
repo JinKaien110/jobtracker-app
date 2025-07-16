@@ -1,9 +1,11 @@
 const JobController = require('../controllers/JobController');
 const ViewController = require('../controllers/ViewController');
+const AuthMiddleware = require('../middlewares/AuthMiddleware');
 
 class Router {
     constructor() {
         this.routes = {};
+        this.protectedViews = new Set(['/views/dashboard.html']);
     }
 
     register(method, path, ...handlers) {
@@ -25,6 +27,13 @@ class Router {
             req.jobId = id;
             return JobController.getJobById(req, res);
         }
+
+        if(method === 'DELETE' && url.startsWith('/job/')) {
+            const id = url.split('/')[2];
+            req.jobId = id;
+            return JobController.deleteJob(req, res);
+        }
+        
         const handlers = this.routes[key];
 
         if(handlers) {
@@ -37,7 +46,15 @@ class Router {
             return next();
         }
 
-        if (url.startsWith('/public') || url.startsWith('/views')) {
+        if(url.startsWith('/views')) {
+            if(this.protectedViews.has(url)) {
+                return AuthMiddleware(req, res, () => ViewController.serveStatic(req, res));
+            } else {
+                return ViewController.serveStatic(req, res);
+            }
+        }
+
+        if (url.startsWith('/public')) {
             return ViewController.serveStatic(req, res);
         }
 

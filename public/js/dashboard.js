@@ -35,6 +35,36 @@ async function openModalEdit(jobId) {
     }
 }
 
+async function logout() {
+    try {
+        const res = await fetch('/logout');
+        const data = await res.json();
+        if(res.ok) {
+            alert(data.message);
+            window.location.href = '/views/index.html';
+        }
+    } catch (err) {
+        console.log(`Error logging out: `, err);
+    }
+}
+
+async function deleteJob(jobId) {
+    try {
+        const res = await fetch(`/job/${jobId}`, {
+            method: 'DELETE'
+        });
+        const job = await res.json();
+
+        if(job.success) {
+            console.log(job);
+            alert(job.message);
+            fetchjobs();
+        }
+    } catch (err) {
+        console.log(`Error deleting job: `, err);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchjobs();
 
@@ -57,6 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('click', (e) => {
         if(e.target === modal) {
             modal.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await logout();
+    });
+
+    document.addEventListener('click', async (e) => {
+        if(e.target.classList.contains('deleteBtn')) {
+            const jobId = e.target.getAttribute('data-id');
+            await deleteJob(jobId);
+            console.log('Click Delete Button');
         }
     });
 

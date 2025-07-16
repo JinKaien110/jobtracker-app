@@ -17,7 +17,8 @@ router.register('POST', '/add-job', AuthMiddleware, JobController.addJob);
 router.register('GET', '/jobs', JobController.allJobs);
 router.register('GET', '/jobs/:id', JobController.getJobById);
 router.register('PUT', '/job/:id', JobController.editJob);
-
+router.register('GET', '/logout', AuthController.logout);
+router.register('DELETE', '/job/:id', JobController.deleteJob);
 
 const server = http.createServer((req, res) => {
     router.resolve(req, res);

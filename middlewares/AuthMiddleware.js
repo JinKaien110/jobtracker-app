@@ -9,8 +9,8 @@ function AuthMiddleware(req, res, next) {
         ?.split('=')[1];
 
     if(!token) {
-        res.writeHead(401, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ success: false, message: 'No token provided'}));
+        res.writeHead(401, {'Content-Type': 'text/plain'});
+        return res.end('404 Not Found');
     }
 
     try {

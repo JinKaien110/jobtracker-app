@@ -71,6 +71,23 @@ class JobController {
             }
         });
     }
+    static async deleteJob(req, res) {
+        try {
+            const jobId = req.jobId;
+            const deletedJob = await JobModel.deleteJob(jobId);
+            
+            if(!deletedJob) {
+                res.writeHead(404, {'Content-Type': 'application/json'});
+                return res.end(JSON.stringify({ success: false, message: "Failed to delete the job"}));
+            }
+
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({ success: true, message: 'Job deleted successfully', job: deletedJob}));
+        } catch (err) {
+            res.writeHead(500, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({ success: false, message: "Server Error", error: err.message }));
+        }
+    }
 }
 
 module.exports = JobController;

@@ -67,6 +67,15 @@ class AuthController {
             }));
         });
     }
+    
+    static logout(req, res) {
+        
+        res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Set-Cookie': `token=; HttpOnly; Path=/; Max-Age=0`
+        });
+        res.end(JSON.stringify({ success: true, message: 'Logout successfully'}));
+    }
 }
 
 module.exports = AuthController;
