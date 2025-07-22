@@ -18,6 +18,17 @@ class JobController {
         }
     }
 
+    static async countJob(req, res) {
+        try {
+            const count = await JobModel.countJobs();
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(count));
+        } catch (err) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Failed to get job count'}));
+        }
+    }
+
     static addJob(req, res) {
         let body = '';
         req.on('data', chunk => {

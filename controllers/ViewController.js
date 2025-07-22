@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const UserModel = require('../models/UserModel');
 
 function serveHome(req, res) {
     const filePath = path.join(__dirname,  '..', 'views', 'index.html');
@@ -40,4 +41,14 @@ function serveStatic(req, res) {
     })
 }
 
-module.exports = {serveStatic, serveHome};
+    async function countUser(req, res) {
+        try {
+            const count = await UserModel.countUsers();
+            res.writeHead(200, { 'Content-Type': 'application/json'});
+            res.end(JSON.stringify(count));
+        } catch (err) {
+            res.writeHead(500, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({ error: 'Failed to get user count'}));
+        }
+    } 
+module.exports = {serveStatic, serveHome, countUser};

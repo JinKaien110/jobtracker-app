@@ -15,9 +15,27 @@ async function fetchjobs() {
             `;
             joblist.appendChild(div);
         });
+
+        
     } catch (err) {
         console.log('Error loading jobs: ', err);
     }
+}
+
+async function countJob() {
+    const res = await fetch('/job-count');
+    const count = await res.json();
+    console.log(count);
+
+    document.getElementById('total-jobs').textContent = count;
+}
+
+async function countUser() {
+    const res = await fetch('/user-count');
+    const count = await res.json();
+    console.log(count);
+
+    document.getElementById('total-users').textContent = count;
 }
 
 async function openModalEdit(jobId) {
@@ -67,6 +85,8 @@ async function deleteJob(jobId) {
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchjobs();
+    countJob();
+    countUser();
 
     const modal = document.getElementById('jobModal');
     const openBtn = document.getElementById('addJob');
@@ -112,8 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newJob)
         });
+
         const data = await res.json();
         message.textContent = data.message;
+
         if (data.success) {
             modal.classList.add('hidden');
             jobForm.reset();

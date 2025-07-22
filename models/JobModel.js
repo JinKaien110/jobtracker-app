@@ -14,6 +14,12 @@ class JobModel {
         return jobs;
     }
 
+    static async countJobs() {
+        const db = await connectDB();
+        const count = db.collection('jobs').countDocuments();
+        return count;
+    }
+
     static async addJob(jobData) {
        const db = await connectDB();
        const result = await db.collection('jobs').insertOne(jobData);

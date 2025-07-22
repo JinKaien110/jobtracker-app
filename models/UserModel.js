@@ -6,6 +6,12 @@ class UserModel {
         return db.collection('users').find().toArray();
     }
 
+    async countUsers() {
+        const db = await connectDB();
+        const count = await db.collection('users').countDocuments();
+        return count;
+    }
+
     async register(UserData) {
         const db = await connectDB();
 
