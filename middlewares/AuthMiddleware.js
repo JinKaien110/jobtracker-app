@@ -7,7 +7,7 @@ function AuthMiddleware(req, res, next) {
         .split('; ')
         .find(row => row.startsWith('token='))
         ?.split('=')[1];
-
+        
     if(!token) {
         res.writeHead(401, {'Content-Type': 'text/plain'});
         return res.end('404 Not Found');

@@ -1,6 +1,10 @@
+const ApplicationController = require('../controllers/ApplicationController');
 const JobController = require('../controllers/JobController');
 const ViewController = require('../controllers/ViewController');
 const AuthMiddleware = require('../middlewares/AuthMiddleware');
+const fs = require('fs');
+const path = require('path');
+const { URL } = require('url');
 
 class Router {
     constructor() {
@@ -15,7 +19,10 @@ class Router {
 
     async resolve(req, res) {
         const { url, method } = req;
-        const key = `${method.toUpperCase()} ${url}`;
+        const urlObj = new URL(url, `http://${req.headers.host}`);
+        const cleanPath = urlObj.pathname;
+        const key = `${method.toUpperCase()} ${cleanPath}`;
+
         if(method === 'PUT' && url.startsWith('/job/')) {
             const id = url.split('/')[2];
             req.jobId = id;
@@ -33,6 +40,35 @@ class Router {
             req.jobId = id;
             return JobController.deleteJob(req, res);
         }
+
+        if(method === 'POST' && url.startsWith('/apply')) {
+            return AuthMiddleware(req, res, () => ApplicationController.apply(req, res));
+        }
+
+        if(method === 'GET' && url.includes('/job-application-form.html')) {
+            const urlObj = new URL(url, `http://${req.headers.host}`);
+            const jobId = urlObj.searchParams.get("jobId");
+
+            const filePath = path.join(__dirname, '..', 'views', 'components', 'job-application-form.html');
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if(err) {
+                    console.log(err)
+                    if(!res.headersSent) {
+                        res.writeHead(500, {'Content-Type': 'text/plain'});
+                        return res.end('Error loading form');
+                    } else {
+                        return;
+                    }
+                }
+
+                const html = data.replace("{{jobId}}", jobId || '');
+                if(!res.headersSent) {
+                    res.writeHead(200, {'Content-Type': 'text/html'});
+                }
+                res.end(html);
+            });
+            return;
+        };
         
         const handlers = this.routes[key];
 

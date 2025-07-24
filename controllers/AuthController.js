@@ -24,13 +24,14 @@ class AuthController {
             );
 
             res.writeHead(200, {'Content-Type': 'application/json',
-                'Set-Cookie': `token=${token}; HttpOnly; Path=/; Max-Age=3600`
+                'Set-Cookie': `token=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3600`
             });
 
             res.end(JSON.stringify({
                 success: true,
                 message: result.message,
-                token
+                token,
+                userId: result.user._id
             }));
         });
     }
@@ -57,7 +58,7 @@ class AuthController {
 
             res.writeHead(200, {
                 'Content-Type': 'application/json',
-                'Set-Cookie': `token=${token}; HttpOnly; Path=/; Max-Age=3600`
+                'Set-Cookie': `token=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3600`
             });
 
             res.end(JSON.stringify({
@@ -72,7 +73,7 @@ class AuthController {
         
         res.writeHead(200, {
             'Content-Type': 'application/json',
-            'Set-Cookie': `token=; HttpOnly; Path=/; Max-Age=0`
+            'Set-Cookie': `token=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`
         });
         res.end(JSON.stringify({ success: true, message: 'Logout successfully'}));
     }

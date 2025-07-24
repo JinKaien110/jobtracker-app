@@ -128,7 +128,8 @@ body {
 }
 
 .job-item .editBtn,
-.job-item .deleteBtn {
+.job-item .deleteBtn,
+.job-item .applyBtn {
   padding: 6px 10px;
   background-color: #f0f4f8;
   color: #333;
@@ -143,7 +144,8 @@ body {
 }
 
 .job-item .editBtn:hover,
-.job-item .deleteBtn:hover {
+.job-item .deleteBtn:hover,
+.job-item .applyBtn:hover {
   background-color: #e0e8f0;
 }
 

@@ -6,6 +6,7 @@ const AuthController = require('./controllers/AuthController');
 const AuthMiddleware = require('./middlewares/AuthMiddleware');
 const ViewController = require('./controllers/ViewController');
 const JobController = require('./controllers/JobController');
+const ApplicationController = require('./controllers/ApplicationController');
 const PORT = 3000;
 
 const router = new Router();
@@ -21,6 +22,7 @@ router.register('GET', '/logout', AuthController.logout);
 router.register('DELETE', '/job/:id', JobController.deleteJob);
 router.register('GET', '/job-count', JobController.countJob);
 router.register('GET', '/user-count', ViewController.countUser);
+router.register('POST', '/apply', ApplicationController.apply);
 
 const server = http.createServer((req, res) => {
     router.resolve(req, res);

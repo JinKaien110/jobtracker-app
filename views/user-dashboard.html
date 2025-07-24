@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="/public/css/admin-dashboard.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>User Panel</h2>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#">Settings</a>
+      <a href="user-dashboard.html" class="active">User Dashboard</a>
+    </nav>
+    <p id="greetings"></p>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <h1>Dashboard</h1>
+      <div class="actions">
+        <button type="button" id="logoutBtn">Logout</button>
+      </div>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <h3>Total Users</h3>
+        <p id="total-users"></p>
+      </div>
+      <div class="card">
+        <h3>Total Jobs</h3>
+        <p id="total-jobs"></p>
+      </div>
+    </section>
+
+    <h1>Jobs</h1>
+    <section id="job-list" class="job-list">
+        <!-- Job List -->
+    </section>
+
+    <p id="message" class="message"></p>
+  </main>
+  
+  <script src="/public/js/user.js"></script>
+</body>
+</html>
